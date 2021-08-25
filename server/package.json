@@ -1,0 +1,30 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "api server for a phaser mmorpg",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "nodemon --watch src --ext ts --exec ts-node/esm src/index.ts",
+    "start": "node --experimental-specifier-resolution=node build/index.js",
+    "build": "tsc"
+  },
+  "author": "Austyn Studdard <KingCosmicDev@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@geckos.io/server": "^2.0.0",
+    "@geckos.io/snapshot-interpolation": "^1.0.2",
+    "@types/node": "^14.17.5",
+    "dotenv": "^8.2.0",
+    "mongodb": "^3.6.3",
+    "nanoid": "^3.1.20",
+    "nodemon": "^2.0.12",
+    "planck-js": "^0.3.31",
+    "typescript": "^3.9.7",
+    "uuid": "^8.3.2",
+    "uuidv4": "^6.2.12"
+  },
+  "devDependencies": {
+    "ts-node": "^8.10.2"
+  }
+}
