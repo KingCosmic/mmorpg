@@ -66,6 +66,8 @@ class Loading extends Scene {
       assetText.destroy();
     });
 
+    this.load.bitmapFont('font', 'assets/fonts/grobold.png', 'assets/fonts/grobold.xml')
+
     this.load.spritesheet('player-white', '/assets/entities/character-white.png', { frameWidth: 32, frameHeight: 32 })
 
     this.load.image('menucontainer', '/assets/ui/menucontainer.png')

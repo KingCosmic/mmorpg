@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
 import config from './config'
 
-export class YourGameName extends Phaser.Game {
-  constructor(config: Phaser.Types.Core.GameConfig) {
+export class MMORPG extends Phaser.Game {
+  constructor() {
     super(config);
   }
 }
 
-const game = new YourGameName(config);
+new MMORPG()

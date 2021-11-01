@@ -7,7 +7,7 @@
     "@geckos.io/client": "^2.0.0",
     "@geckos.io/snapshot-interpolation": "^1.0.2",
     "file-loader": "^6.2.0",
-    "phaser": "3.55.2",
+    "phaser": "^3.55.2",
     "planck-js": "^0.3.31",
     "raw-loader": "^4.0.2",
     "string-replace-loader": "^3.0.3"

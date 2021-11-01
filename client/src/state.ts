@@ -1,5 +1,6 @@
 import { Events } from 'phaser'
 import geckos, { ClientChannel } from '@geckos.io/client'
+import Player from 'entities/Player'
 
 class State {
   static channel:ClientChannel
@@ -10,19 +11,9 @@ class State {
   static events:Events.EventEmitter = new Events.EventEmitter()
 
   /**
-   * Items our player has.
+   * Our player
    */
-  static items:any[] = []
-
-  /**
-   * Items our player has in their hotbar
-   */
-  static hotbar:any[] = []
-
-  /**
-   * The currently equipped item, 0 based like our array
-   */
-  static equippedItem:number = 0
+  static player:Player;
 
   /**
    * connect
@@ -32,6 +23,10 @@ class State {
       url: `http://localhost`,
       port: 3000
     })
+  }
+
+  public static sendMessage(content:string) {
+    this.channel.emit('chat-message', content)
   }
 }
 

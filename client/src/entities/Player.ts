@@ -1,34 +1,54 @@
-import { GameObjects } from 'phaser'
+import { GameObjects, Input } from 'phaser'
 import Game from '../scenes/game'
 
 import PL, { Body, Vec2 } from 'planck-js'
 
-import { PlayerState } from '../types'
+import { InputType, PlayerState } from '../types'
 
 class Player extends GameObjects.Sprite {
   // @ts-ignore
   scene:Game
 
   /**
-   * The spoeed our player moves.
-   */
-  speed:number = 70;
-
-  /**
-   * id of our player
+   * id of the player
    */
   id:string = '';
-  
+
   /**
    * this is used to tell players apart from other objects.
    */
   category:string = 'player'
 
   /**
-   * This is our plank body, used to stick with the normal phaser api.
-   */
+  * This is our plank body, used to stick with the normal phaser api.
+  */
   // @ts-ignore
   body:Body
+
+  /**
+   * Health of the player.
+   */
+  health:number = 50;
+
+  /**
+   * max health of our player.
+   */
+  maxHealth:number = 100;
+
+  /**
+   * The speed the player moves.
+   */
+  speed:number = 70;
+
+  /**
+   * speed of our player when sprinting.
+   */
+  sprintSpeed:number = 120;
+
+  /**
+   * hotbar for our player.
+   */
+  hotbar:any[] = []
 
   /**
    * The last position of our player (used to determin what animations are played)
@@ -74,9 +94,15 @@ class Player extends GameObjects.Sprite {
 
     // set the default last position
     this.lastPosition = new Vec2(player.x, player.y)
+
+    // add our player to the scene so it can render and update.
+    // @ts-ignore
+    scene.add.existing(this)
   }
 
   override preUpdate(time:number, delta:number) {
+    // call the sprites built in preUpdate method
+    // (this is what causes the animations to run)
     super.preUpdate(time, delta)
 
     // keep our sprite attached to our physics body
@@ -88,13 +114,17 @@ class Player extends GameObjects.Sprite {
   }
 
   runAnimations(b:PlayerState) {
+    // grab our last position.
     let { x, y } = this.lastPosition
 
+    // calculate the difference between it and our current position.
     let difX = x - b.x
     let difY = y - b.y
 
+    // default animation
     let anim = 'idle'
 
+    // if we have a difference in the x axis change our direction and animation.
     if (difX < 0) {
       anim = 'wr'
       this.direction = 'right'
@@ -103,6 +133,7 @@ class Player extends GameObjects.Sprite {
       this.direction = 'left'
     }
 
+    // If we have a difference in the y axis change our direction and animation.
     if (difY < 0 && anim === 'idle') {
       anim = 'wd'
       this.direction = 'down'
@@ -122,13 +153,23 @@ class Player extends GameObjects.Sprite {
     this.lastPosition.set(b.x, b.y)
   }
 
-  // apply user's input to this entity.
-  applyInput(input: { h:number, v:number, action:boolean }) {
+  /** 
+   * apply user's input to this entity.
+   */
+  applyInput(input:InputType) {
+    // create a ne velocity vector
     let vel = PL.Vec2()
 
-    vel.x = input.h * this.speed
-    vel.y = input.v * this.speed
+    // are we sprinting or not?
+    const speed = (input.s) ? this.sprintSpeed : this.speed
 
+    // for the x axis multiply the horizontal input by our speed.
+    vel.x = input.h * speed
+
+    // for the y axis multiply the vertical input by our speed.
+    vel.y = input.v * speed
+
+    // apply the velocity to our bodys world center.
     this.body.applyLinearImpulse(vel, this.body.getWorldCenter(), true)
   }
 }

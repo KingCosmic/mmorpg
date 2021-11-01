@@ -17,10 +17,11 @@ class Hotbar extends GameObjects.Layer {
 
     // add this GO to the scene
     scene.add.existing(this)
-
+    
     // create the hotbar
     this.createHotbar()
 
+    // update our healthbar when an event occurs
     GameState.events.on('update-hotbar', this.updateHotbar, this)
   }
 
@@ -56,12 +57,18 @@ class Hotbar extends GameObjects.Layer {
     // difference between total size and screen size divided by two
     const padding = (this.scene.cameras.main.width - total) / 2
 
+    // loop through hotbor slots and update them.
     for (let s = 0; s < this.hotbarSlots; s++) {
-      const item = GameState.hotbar[s]
+      // grab item related to this hotbar slot.
+      const item = GameState.player.hotbar[s]
 
+      // grab gameobject by name.
       let icon = this.getByName(`${s}`)
 
+      // calculate y position
       const y = bottom - (this.hotbarSize + 5)
+
+      // calculate x position
       const x = padding + (s * this.hotbarSize)
 
       // no item and no icon? just continue
@@ -76,8 +83,10 @@ class Hotbar extends GameObjects.Layer {
       // this check is for typescript
       if (!icon) return
 
+      // update name to the item name.
       icon.name = `${s}`
 
+      // add icon to our scene if needed.
       this.add(icon)
     }
   }
